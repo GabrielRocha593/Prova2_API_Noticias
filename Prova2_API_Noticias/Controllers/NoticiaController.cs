@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Prova2_API_Noticias.Data;
 using Prova2_API_Noticias.Data.Dtos.Noticia;
 using Prova2_API_Noticias.Models;
+using Prova2_API_Noticias.Services;
+using System.Collections.Generic;
 
 namespace Prova2_API_Noticias.Controllers
 {
@@ -12,74 +15,52 @@ namespace Prova2_API_Noticias.Controllers
     [Route("[controller]")]
     public class NoticiaController : ControllerBase
     {
-        private PrincipalContext _context;
-        private IMapper _mapper;
 
-        public NoticiaController(PrincipalContext context, IMapper mapper)
+        private NoticiaService _NoticiaService;
+
+        public NoticiaController(NoticiaService noticiaService) 
         {
-            _context = context;
-            _mapper = mapper;
+            _NoticiaService = noticiaService;
         }
 
         [HttpPost]
         public IActionResult AdicionaNoticia([FromBody] CreateNoticiaDto NoticiaDto)
         {
-            Noticia noticia = _mapper.Map<Noticia>(NoticiaDto);
-            noticia.DataPublicacao = DateTime.Now;
-            _context.Noticia.Add(noticia);
-            _context.SaveChanges();
+            ReadNoticiaDto readDto = _NoticiaService.AdicionaNoticia(NoticiaDto);            
 
-            return CreatedAtAction(nameof(RecuperaNoticiaPorId), new { Id = noticia.Id }, noticia);
+            return CreatedAtAction(nameof(RecuperaNoticiaPorId), new { Id = readDto.Id }, readDto);
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperaNoticiaPorId(int id)
         {
-            Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
-            if (noticia != null)
-            {
-                ReadNoticiaDto noticiaDto = _mapper.Map<ReadNoticiaDto>(noticia);
-                return Ok(noticiaDto);
-            }
+            ReadNoticiaDto readDto =  _NoticiaService.RecuperaNoticiaPorId(id);
+            if (readDto != null) { return Ok(readDto); };
             return NotFound();
         }
 
         [HttpGet]
         public IEnumerable<ReadNoticiaDto> RecuperaNoticia([FromQuery] int? noticiaId = null)
         {
-            if (noticiaId == null)
-            {
-                return _mapper.Map<List<ReadNoticiaDto>>(_context.Noticia.ToList());
-            }            
-            return _mapper.Map<List<ReadNoticiaDto>>(_context.Noticia.Where(noticia => noticia.Id == noticiaId).ToList()); ;
+            List <ReadNoticiaDto> readDto = _NoticiaService.RecuperaNoticia(noticiaId);
+
+            return readDto;
         }
 
         [HttpPut("{id}")]
         public IActionResult AtualizaNoticia(int id, [FromBody] UpdateNoticiaDto noticiaDto)
         {
-            Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
-            if (noticia == null)
-            {
-                return NotFound();
-            }
-            noticia.DataPublicacao = DateTime.Now;
-
-            _mapper.Map(noticiaDto, noticia);
-            _context.Update(noticia);
-            _context.SaveChanges();
+            Result resultado = _NoticiaService.AtualizaNoticia(id, noticiaDto);
+            if (resultado.IsFailed){ return NotFound(); }
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletaNoticia(int id)
         {
-            Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
-            if (noticia == null)
-            {
-                return NotFound();
-            }
-            _context.Remove(noticia);
-            _context.SaveChanges();
+            Result resultado = _NoticiaService.DeletaNoticia(id);
+
+            if (resultado.IsFailed) { return NotFound(); }
             return NoContent();
         }
     }

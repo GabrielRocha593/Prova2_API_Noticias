@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Prova2_API_Noticias.Data;
+using Prova2_API_Noticias.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<NoticiaService, NoticiaService>();
+
 var app = builder.Build();
 
 
