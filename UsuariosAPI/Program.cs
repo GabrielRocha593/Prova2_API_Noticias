@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UsuariosAPI.Data;
 using Microsoft.AspNetCore.Identity;
-
+using UsuariosAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UsuarioConnection");
@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<UserDbContext>(options => options.UseMySQL(connectionString));
 builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>().AddEntityFrameworkStores<UserDbContext>();
+builder.Services.AddScoped<CadastroService, CadastroService>();
 
 
 
