@@ -8,7 +8,6 @@ public class TipoAuthorization : AuthorizationHandler<TipoJornalista>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, TipoJornalista requirement)
     {
-        //var claimTipo = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/tipo";
         var TipoJornalistaClain = context
         .User
         .Claims.FirstOrDefault(Claim =>
@@ -20,8 +19,17 @@ public class TipoAuthorization : AuthorizationHandler<TipoJornalista>
 
         var TipoJornalista = TipoJornalistaClain.Value;
 
-        if (Int32.Parse(TipoJornalista) == requirement.tipo) context.Succeed(requirement);
+        if (Int32.Parse(TipoJornalista) == requirement.tipo)
+        {
+            context.Succeed(requirement);
+        }
+        else
+        {
+            context.Fail();
+        }
+        
 
+        
         return Task.CompletedTask;
         
     }

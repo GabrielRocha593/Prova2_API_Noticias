@@ -21,6 +21,11 @@ builder.Services.AddDbContext<UsuarioDbContext>
         opts.UseMySql(connString, ServerVersion.AutoDetect(connString));
     });
 
+var connectionString = builder.Configuration.GetConnectionString("SiteConnection");
+
+builder.Services.AddDbContext<PrincipalContext>(opts =>
+    opts.UseLazyLoadingProxies().UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
 builder.Services
     .AddIdentity<Usuario, IdentityRole>()
     .AddEntityFrameworkStores<UsuarioDbContext>()
@@ -30,6 +35,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, TipoAuthorization>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<NoticiaService, NoticiaService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

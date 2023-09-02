@@ -23,9 +23,12 @@ namespace Prova2_API_Noticias.Controllers
             _NoticiaService = noticiaService;
         }
 
+
         [HttpPost]
         public IActionResult AdicionaNoticia([FromBody] CreateNoticiaDto NoticiaDto)
         {
+
+
             ReadNoticiaDto readDto = _NoticiaService.AdicionaNoticia(NoticiaDto);            
 
             return CreatedAtAction(nameof(RecuperaNoticiaPorId), new { Id = readDto.Id }, readDto);
