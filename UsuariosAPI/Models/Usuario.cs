@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace UsuariosAPI.Models
 {
-    public class Usuario
+    public class Usuario : IdentityUser
     {
-        [Required]
-        public string Id { get; set; }
-        [Required]
-        public string Username { get; set; }
-        [Required]
-        public string Email { get; set; }
+        public int tipo { get; set; }
+        public Usuario() : base() { }
     }
 }
