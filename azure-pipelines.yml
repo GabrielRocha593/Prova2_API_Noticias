@@ -14,7 +14,7 @@ variables:
   imageRepository: 'imagemdocketprod'
   containerRegistry: 'gabrielscontainerrepository.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/app/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: 'Latest'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
