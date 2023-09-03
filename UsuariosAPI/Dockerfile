@@ -10,7 +10,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-#COPY ["UsuariosAPI/UsuariosAPI.csproj", "UsuariosAPI/"]
+COPY ["*.csproj", "UsuariosAPI/"]
 RUN dotnet restore "UsuariosAPI/UsuariosAPI.csproj"
 COPY . .
 WORKDIR "/src/UsuariosAPI"
