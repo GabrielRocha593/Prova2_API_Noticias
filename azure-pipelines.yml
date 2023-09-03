@@ -17,7 +17,7 @@ variables:
   tag: 'Latest'
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: 'windows-2022'
 
 stages:
 - stage: Build
