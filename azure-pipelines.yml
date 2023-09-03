@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: 'b3392185-b8bc-4421-aab8-ccb4f72ebef3'
   imageRepository: 'imagemdocketprod'
   containerRegistry: 'gabrielscontainerrepository.azurecr.io'
-  dockerfilePath: 'UsuariosAPI\Dockerfile'
+  dockerfilePath: 'Dockerfile'
   tag: 'Latest'
 
   # Agent VM image name
