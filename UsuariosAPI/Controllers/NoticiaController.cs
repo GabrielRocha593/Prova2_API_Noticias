@@ -22,8 +22,6 @@ public class NoticiaController : ControllerBase
     [Authorize(Policy = "TipoJornalista")]
     public IActionResult AdicionaNoticia([FromBody] CreateNoticiaDto NoticiaDto)
     {
-
-
         ReadNoticiaDto readDto = _NoticiaService.AdicionaNoticia(NoticiaDto);
 
         return CreatedAtAction(nameof(RecuperaNoticiaPorId), new { Id = readDto.Id }, readDto);

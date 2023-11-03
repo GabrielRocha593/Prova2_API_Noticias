@@ -16,18 +16,21 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("cadastro")]
-    public async Task<IActionResult> CadastraUsuario
-        (CreateUsuarioDto dto)
-    {
+    public async Task<IActionResult> CadastraUsuario(CreateUsuarioDto dto){
         await _usuarioService.CadastraUsuario(dto);
         return Ok("Usuário cadastrado!");
 
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync(LoginUsuarioDto dto)
-    {
-        var token = await _usuarioService.Login(dto);
-        return Ok(token);
+    public async Task<IActionResult> LoginAsync(LoginUsuarioDto dto){
+        
+        var UsuarioLogado = await _usuarioService.Login(dto);
+        if (!UsuarioLogado.sucesso)
+        {
+            return Unauthorized(UsuarioLogado.mensagem);
+        }
+        
+        return Ok(UsuarioLogado);
     }
 }

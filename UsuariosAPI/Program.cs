@@ -10,6 +10,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -23,8 +24,11 @@ builder.Services.AddDbContext<UsuarioDbContext>
 
 var connectionString = builder.Configuration.GetConnectionString("SiteConnection");
 
-builder.Services.AddDbContext<PrincipalContext>(opts =>
-    opts.UseLazyLoadingProxies().UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddDbContext<PrincipalContext>
+    (opts =>
+    {
+        opts.UseLazyLoadingProxies().UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    });
 
 builder.Services
     .AddIdentity<Usuario, IdentityRole>()
@@ -67,9 +71,6 @@ builder.Services.AddScoped<TokenService, TokenService>();
 //builder.Services.AddDbContext<UserDbContext>(options => options.UseMySQL(connectionString));
 //builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>().AddEntityFrameworkStores<UserDbContext>();
 
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -88,3 +89,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+public partial class Program { }

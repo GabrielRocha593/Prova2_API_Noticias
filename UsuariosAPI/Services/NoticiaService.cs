@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using UsuariosAPI.Data;
 using UsuariosAPI.Data.Dtos.Noticia;
 using UsuariosAPI.Models;
@@ -21,6 +22,7 @@ public class NoticiaService
     {
         Noticia noticia = _mapper.Map<Noticia>(noticiaDto);
         noticia.DataPublicacao = DateTime.Now;
+        _context.Database.Migrate();
         _context.Noticia.Add(noticia);
         _context.SaveChanges();
 
@@ -29,6 +31,7 @@ public class NoticiaService
 
     public ReadNoticiaDto RecuperaNoticiaPorId(int id)
     {
+        _context.Database.Migrate();
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia != null)
         {
@@ -40,17 +43,17 @@ public class NoticiaService
 
     public List<ReadNoticiaDto> RecuperaNoticia(int? noticiaId)
     {
-
+        _context.Database.Migrate();
         if (noticiaId == null)
         {
             return _mapper.Map<List<ReadNoticiaDto>>(_context.Noticia.ToList());
-        }
+        }        
         return _mapper.Map<List<ReadNoticiaDto>>(_context.Noticia.Where(noticia => noticia.Id == noticiaId).ToList());
     }
 
     public Result AtualizaNoticia(int id, UpdateNoticiaDto noticiaDto)
     {
-
+        _context.Database.Migrate();
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia == null)
         {
@@ -58,17 +61,14 @@ public class NoticiaService
         }
         noticia.DataPublicacao = DateTime.Now;
 
-
         _mapper.Map(noticiaDto, noticia);
         _context.SaveChanges();
         return Result.Ok();
-
-
-
     }
 
     public Result DeletaNoticia(int id)
     {
+        _context.Database.Migrate();
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia == null)
         {

@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using UsuariosAPI.Data;
 using UsuariosAPI.Data.Dtos;
 using UsuariosAPI.Models;
 
@@ -11,18 +14,22 @@ public class UsuarioService
     private UserManager<Usuario> _userManager;
     private SignInManager<Usuario> _signInManager;
     private TokenService _tokenService;
+    private UsuarioDbContext _dbContext;
 
-    public UsuarioService(IMapper mapper, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, TokenService tokenService)
+    public UsuarioService(IMapper mapper, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, TokenService tokenService, UsuarioDbContext dbContext)
     {
         _mapper = mapper;
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
+        _dbContext = dbContext;
     }
 
     public async Task CadastraUsuario(CreateUsuarioDto dto)
     {
         Usuario usuario = _mapper.Map<Usuario>(dto);
+
+        _dbContext.Database.Migrate();
 
         IdentityResult resultado = await _userManager.CreateAsync(usuario, dto.Password);
 
@@ -32,13 +39,22 @@ public class UsuarioService
         }
     }
 
-    public async Task<string> Login(LoginUsuarioDto dto)
+    public async Task<UsuarioLogado> Login(LoginUsuarioDto dto)
     {
+        _dbContext.Database.Migrate();
+
         var resultado = await _signInManager.PasswordSignInAsync(dto.Username, dto.Password, false, false);
+
+        var usuarioobj = new UsuarioLogado("", "", resultado.Succeeded);
 
         if (!resultado.Succeeded)
         {
-            throw new ApplicationException("Usuário não autenticado!");
+            usuarioobj.mensagem = "Usuario o senha incorreta.";
+
+            return usuarioobj;
+
+
+            //throw new ApplicationException("Usuário não autenticado!");
         }
 
         var usuario = _signInManager
@@ -48,7 +64,10 @@ public class UsuarioService
 
         var token = _tokenService.GenerateToken(usuario);
 
-        return token;
+        usuarioobj.Token = token;
+        usuarioobj.mensagem = "Usuario logado";
+
+        return usuarioobj;
 
     }
 }
