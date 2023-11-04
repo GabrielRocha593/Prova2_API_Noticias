@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=build /app/out .
 
 # Exponha a porta em que a aplicação está ouvindo (substitua pela porta correta da sua aplicação)
-EXPOSE 5000
+EXPOSE 80
 
 # Especifique o comando de inicialização da aplicação
 ENTRYPOINT ["dotnet", "UsuariosAPI.dll"]
