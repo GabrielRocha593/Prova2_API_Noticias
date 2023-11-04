@@ -1,30 +1,30 @@
 # Use a imagem oficial do SDK do .NET 6 como ponto de partida
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build
 
-# Defina o diretório de trabalho dentro do contêiner
+# Define o diretÃ³rio de trabalho dentro do contÃªiner
 WORKDIR /app
 
-# Copie o arquivo .csproj e restaure as dependências
+# Copie o arquivo .csproj e restaura as dependÃªncias
 COPY *.csproj ./
 RUN dotnet restore
 
-# Copie o restante do código-fonte da aplicação
+# Copie o restante do cÃ³digo-fonte da aplicaÃ§Ã£o
 COPY . .
 
-# Publicar a aplicação
+# Publicar a aplicaÃ§Ã£o
 RUN dotnet publish -c Release -o out
 
 # Use a imagem oficial do ASP.NET 6 como imagem de destino
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 
-# Defina o diretório de trabalho dentro do contêiner
+# Defina o diretÃ³rio de trabalho dentro do contÃªiner
 WORKDIR /app
 
 # Copie os arquivos publicados da imagem anterior
 COPY --from=build /app/out .
 
-# Exponha a porta em que a aplicação está configurada para ouvir (porta 5000 neste exemplo)
+# Exponha a porta em que a aplicaÃ§Ã£o estÃ¡ ouvindo (substitua pela porta correta da sua aplicaÃ§Ã£o)
 EXPOSE 5000
 
-# Especifique o comando de inicialização da aplicação
+# Especifique o comando de inicializaÃ§Ã£o da aplicaÃ§Ã£o
 ENTRYPOINT ["dotnet", "UsuariosAPI.dll"]
