@@ -1,39 +1,36 @@
-# Docker
-# Build and push an image to Azure Container Registry
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - master
 
-resources:
-- repo: self
+pool:
+  vmImage: 'windows-latest'
 
 variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'conteinerimagens'
-  imageRepository: 'usuarioapi'
-  containerRegistry: 'imagensapigabriel.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
-  tag: 'latest'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Build and publish stage
   jobs:
   - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
+    displayName: Build and publish
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        restoreSolution: '$(solution)'
+
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
