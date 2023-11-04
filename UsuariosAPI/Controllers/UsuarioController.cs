@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using UsuariosAPI.Data.Dtos;
 using UsuariosAPI.Services;
 
@@ -17,8 +18,12 @@ public class UsuarioController : ControllerBase
 
     [HttpPost("cadastro")]
     public async Task<IActionResult> CadastraUsuario(CreateUsuarioDto dto){
-        await _usuarioService.CadastraUsuario(dto);
-        return Ok("Usuário cadastrado!");
+        IdentityResult resultado = await _usuarioService.CadastraUsuario(dto);
+        if (resultado.Succeeded)
+        {
+            return Ok("Usuário cadastrado!");
+        }
+        return BadRequest(resultado.Errors);
 
     }
 

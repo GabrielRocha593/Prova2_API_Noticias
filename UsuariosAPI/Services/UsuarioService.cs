@@ -25,7 +25,7 @@ public class UsuarioService
         _dbContext = dbContext;
     }
 
-    public async Task CadastraUsuario(CreateUsuarioDto dto)
+    public async Task<IdentityResult> CadastraUsuario(CreateUsuarioDto dto)
     {
         Usuario usuario = _mapper.Map<Usuario>(dto);
 
@@ -33,10 +33,7 @@ public class UsuarioService
 
         IdentityResult resultado = await _userManager.CreateAsync(usuario, dto.Password);
 
-        if (!resultado.Succeeded)
-        {
-            throw new ApplicationException("Falha ao cadastrar usuário!");
-        }
+        return resultado;
     }
 
     public async Task<UsuarioLogado> Login(LoginUsuarioDto dto)
@@ -53,8 +50,6 @@ public class UsuarioService
 
             return usuarioobj;
 
-
-            //throw new ApplicationException("Usuário não autenticado!");
         }
 
         var usuario = _signInManager

@@ -2,15 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using UsuariosAPI.Data;
 using Microsoft.AspNetCore.Identity;
 using UsuariosAPI.Services;
-using Microsoft.Extensions.Options;
 using UsuariosAPI.Models;
 using UsuariosAPI.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
