@@ -10,7 +10,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '7dr6+Ntk+wQzd1p+l4lYBFOmYQvWQ+P/X/V+C33Q1x+ACRCuwdPm'
+  dockerRegistryServiceConnection: 'conteinerimagens'
   imageRepository: 'usuarioapi'
   containerRegistry: 'imagensapigabriel.azurecr.io'
   dockerfilePath: 'Dockerfile'
