@@ -29,7 +29,6 @@ public class UsuarioService
     {
         Usuario usuario = _mapper.Map<Usuario>(dto);
 
-        _dbContext.Database.Migrate();
 
         IdentityResult resultado = await _userManager.CreateAsync(usuario, dto.Password);
 
@@ -38,8 +37,6 @@ public class UsuarioService
 
     public async Task<UsuarioLogado> Login(LoginUsuarioDto dto)
     {
-        _dbContext.Database.Migrate();
-
         var resultado = await _signInManager.PasswordSignInAsync(dto.Username, dto.Password, false, false);
 
         var usuarioobj = new UsuarioLogado("", "", resultado.Succeeded);

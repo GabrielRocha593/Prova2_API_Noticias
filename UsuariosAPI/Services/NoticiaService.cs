@@ -22,7 +22,6 @@ public class NoticiaService
     {
         Noticia noticia = _mapper.Map<Noticia>(noticiaDto);
         noticia.DataPublicacao = DateTime.Now;
-        _context.Database.Migrate();
         _context.Noticia.Add(noticia);
         _context.SaveChanges();
 
@@ -31,7 +30,6 @@ public class NoticiaService
 
     public ReadNoticiaDto RecuperaNoticiaPorId(int id)
     {
-        _context.Database.Migrate();
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia != null)
         {
@@ -43,7 +41,6 @@ public class NoticiaService
 
     public List<ReadNoticiaDto> RecuperaNoticia(int? noticiaId)
     {
-        _context.Database.Migrate();
         if (noticiaId == null)
         {
             return _mapper.Map<List<ReadNoticiaDto>>(_context.Noticia.ToList());
@@ -53,7 +50,6 @@ public class NoticiaService
 
     public Result AtualizaNoticia(int id, UpdateNoticiaDto noticiaDto)
     {
-        _context.Database.Migrate();
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia == null)
         {
@@ -68,7 +64,6 @@ public class NoticiaService
 
     public Result DeletaNoticia(int id)
     {
-        _context.Database.Migrate();
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia == null)
         {
