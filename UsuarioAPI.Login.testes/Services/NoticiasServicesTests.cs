@@ -11,6 +11,7 @@ using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Polly;
 using MySqlConnector;
+using Microsoft.IdentityModel.Tokens;
 
 namespace UsuarioAPI.Login.testes.Services;
 

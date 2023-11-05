@@ -3,22 +3,27 @@ using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using UsuariosAPI.Data;
 using UsuariosAPI.Data.Dtos.Noticia;
+using UsuariosAPI.Interfaces;
 using UsuariosAPI.Models;
 
 namespace UsuariosAPI.Services;
 
-public class NoticiaService
+public class NoticiaService : INoticiaService
 {
     private PrincipalContext _context;
     private IMapper _mapper;
 
+    public NoticiaService()
+    {
+        // Construtor sem parâmetros
+    }
     public NoticiaService(PrincipalContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public ReadNoticiaDto AdicionaNoticia(CreateNoticiaDto noticiaDto)
+    public virtual ReadNoticiaDto AdicionaNoticia(CreateNoticiaDto noticiaDto)
     {
         Noticia noticia = _mapper.Map<Noticia>(noticiaDto);
         noticia.DataPublicacao = DateTime.Now;
@@ -28,7 +33,7 @@ public class NoticiaService
         return _mapper.Map<ReadNoticiaDto>(noticia);
     }
 
-    public ReadNoticiaDto RecuperaNoticiaPorId(int id)
+    public virtual ReadNoticiaDto RecuperaNoticiaPorId(int id)
     {
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia != null)
@@ -39,7 +44,7 @@ public class NoticiaService
         return null;
     }
 
-    public List<ReadNoticiaDto> RecuperaNoticia(int? noticiaId)
+    public virtual List<ReadNoticiaDto> RecuperaNoticia(int? noticiaId)
     {
         if (noticiaId == null)
         {
@@ -48,7 +53,7 @@ public class NoticiaService
         return _mapper.Map<List<ReadNoticiaDto>>(_context.Noticia.Where(noticia => noticia.Id == noticiaId).ToList());
     }
 
-    public Result AtualizaNoticia(int id, UpdateNoticiaDto noticiaDto)
+    public virtual Result AtualizaNoticia(int id, UpdateNoticiaDto noticiaDto)
     {
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia == null)
@@ -62,7 +67,7 @@ public class NoticiaService
         return Result.Ok();
     }
 
-    public Result DeletaNoticia(int id)
+    public virtual Result DeletaNoticia(int id)
     {
         Noticia noticia = _context.Noticia.FirstOrDefault(noticia => noticia.Id == id);
         if (noticia == null)
