@@ -16,6 +16,11 @@ public class UsuarioService
     private TokenService _tokenService;
     private UsuarioDbContext _dbContext;
 
+    public UsuarioService()
+    {
+        //construtor vazio
+    }
+
     public UsuarioService(IMapper mapper, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, TokenService tokenService, UsuarioDbContext dbContext)
     {
         _mapper = mapper;
@@ -25,7 +30,7 @@ public class UsuarioService
         _dbContext = dbContext;
     }
 
-    public async Task<IdentityResult> CadastraUsuario(CreateUsuarioDto dto)
+    public virtual async Task<IdentityResult> CadastraUsuario(CreateUsuarioDto dto)
     {
         Usuario usuario = _mapper.Map<Usuario>(dto);
 
@@ -35,7 +40,7 @@ public class UsuarioService
         return resultado;
     }
 
-    public async Task<UsuarioLogado> Login(LoginUsuarioDto dto)
+    public virtual async Task<UsuarioLogado> Login(LoginUsuarioDto dto)
     {
         var resultado = await _signInManager.PasswordSignInAsync(dto.Username, dto.Password, false, false);
 
@@ -43,7 +48,7 @@ public class UsuarioService
 
         if (!resultado.Succeeded)
         {
-            usuarioobj.mensagem = "Usuario o senha incorreta.";
+            usuarioobj.mensagem = "Usuario ou senha incorreta.";
 
             return usuarioobj;
 

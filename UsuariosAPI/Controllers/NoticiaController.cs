@@ -51,7 +51,7 @@ public class NoticiaController : ControllerBase
     {
         Result resultado = _NoticiaService.AtualizaNoticia(id, noticiaDto);
         if (resultado.IsFailed) { return NotFound(); }
-        return NoContent();
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -61,6 +61,6 @@ public class NoticiaController : ControllerBase
         Result resultado = _NoticiaService.DeletaNoticia(id);
 
         if (resultado.IsFailed) { return NotFound(); }
-        return NoContent();
+        return Ok();
     }
 }

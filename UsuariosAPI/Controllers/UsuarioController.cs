@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using UsuariosAPI.Data.Dtos;
 using UsuariosAPI.Services;
@@ -18,7 +18,7 @@ public class UsuarioController : ControllerBase
 
     [HttpPost("cadastro")]
     public async Task<IActionResult> CadastraUsuario(CreateUsuarioDto dto){
-        IdentityResult resultado = await _usuarioService.CadastraUsuario(dto);
+        var resultado = await _usuarioService.CadastraUsuario(dto);
         if (resultado.Succeeded)
         {
             return Ok("Usuário cadastrado!");
@@ -28,7 +28,7 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync(LoginUsuarioDto dto){
+    public async Task<IActionResult> Login(LoginUsuarioDto dto){
         
         var UsuarioLogado = await _usuarioService.Login(dto);
         if (!UsuarioLogado.sucesso)
@@ -36,6 +36,6 @@ public class UsuarioController : ControllerBase
             return Unauthorized(UsuarioLogado.mensagem);
         }
         
-        return Ok(UsuarioLogado);
+        return Ok(UsuarioLogado.Token);
     }
 }
