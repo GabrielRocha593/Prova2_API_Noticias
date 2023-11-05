@@ -22,7 +22,7 @@ jobs:
       sudo apt-get install -y docker.io
 
       # Log in to Docker registry (Azure Container Registry)
-      docker login imagensapigabriel.azurecr.io -u <username> -p <password>
+      docker login imagensapigabriel.azurecr.io -u conteinerimagens -p RqEsWzQ4B7BMM7GCOoPredwS/RVcfaEWtBdodccyMu+ACRAvtJdu
 
       # Build the Docker image
       docker build -t usuarioapi:latest -f .**/Dockerfile .
