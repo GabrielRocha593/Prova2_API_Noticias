@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // Adicione a configuração da porta aqui
-string port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+string port = Environment.GetEnvironmentVariable("PORT") ?? "80";
 var uri = new UriBuilder("http://0.0.0.0:" + port);
 var baseAddress = uri.Uri.ToString();
 builder.Configuration["BaseAddress"] = baseAddress;
