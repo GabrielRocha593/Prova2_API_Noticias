@@ -69,7 +69,6 @@ builder.Services.AddAuthorization(options =>
 }); 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -81,7 +80,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API");
-    c.RoutePrefix = string.Empty; // Define o prefixo da rota como vazio para que o SwaggerUI seja a página inicial
+    c.RoutePrefix = string.Empty; 
 });
 
 using (var scope = app.Services.CreateScope())
