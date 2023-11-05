@@ -44,7 +44,7 @@ jobs:
       dotnet build
 
       # Execute integration tests (replace with your test command)
-      dotnet test .**/UsuarioAPI.Login.testes.csproj
+      dotnet test ./path/to/Prova2_API_Noticias.sln
     displayName: 'Run Integration Tests'
 
   - task: PublishTestResults@2
