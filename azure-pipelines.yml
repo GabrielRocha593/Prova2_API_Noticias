@@ -17,14 +17,15 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Compila e Armazena Imagem
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Compila Projeto
     pool:
       vmImage: $(vmImageName)
     steps:
     - task: DotNetCoreCLI@2
+      displayName: ExecutaTestes
       inputs:
         command: 'test'
         projects: '**/UsuarioAPI.Login.testes.csproj'
@@ -42,7 +43,7 @@ stages:
         }
       displayName: 'Check Test Results'
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Compila e Armazena a imagem para o Conteiner registry
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
