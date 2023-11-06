@@ -57,8 +57,12 @@ public class NoticiaControllerTests
     {
         // Arrange
         var noticiaServiceMock = new Mock<NoticiaService>();
-        var readNoticiaDto = new ReadNoticiaDto { Id = 1, Titulo = "Noticia 1", Descricao = "Descricao 1", Chapeu = "Chapeu 1", DataPublicacao = DateTime.Now, Autor = "Autor 1" };
-        var createNoticiaDto = new CreateNoticiaDto { Titulo = "Noticia 1", Descricao = "Descricao 1", Chapeu = "Chapeu 1", Autor = "Autor 1" };
+        var readNoticiaDto = new ReadNoticiaDto { 
+            Id = 1, Titulo = "Noticia 1", Descricao = "Descricao 1", Chapeu = "Chapeu 1", DataPublicacao = DateTime.Now, Autor = "Autor 1" 
+        };
+        var createNoticiaDto = new CreateNoticiaDto { 
+            Titulo = "Noticia 1", Descricao = "Descricao 1", Chapeu = "Chapeu 1", Autor = "Autor 1" 
+        };
 
         noticiaServiceMock.Setup(repo => repo.AdicionaNoticia(createNoticiaDto)).Returns(readNoticiaDto);
         var controller = new NoticiaController(noticiaServiceMock.Object);

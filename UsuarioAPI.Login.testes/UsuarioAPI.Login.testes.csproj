@@ -31,9 +31,4 @@
     <ProjectReference Include="..\UsuariosAPI\UsuariosAPI.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Factory\" />
-    <Folder Include="Fectories\" />
-  </ItemGroup>
-
 </Project>

@@ -66,10 +66,10 @@ public class NoticiasServicesTests : IClassFixture<WebApplicationFactory<Program
             Autor = "Gabriel"
         };
 
-        //Thread.Sleep(20000);
         ReadNoticiaDto response = NoticiaService.AdicionaNoticia(request);
         //Assert
         Assert.NotNull(response);
+        Assert.True(response.Id != null);
     }
 
     [Fact]
@@ -145,7 +145,6 @@ public class NoticiasServicesTests : IClassFixture<WebApplicationFactory<Program
             Autor = "Gabriel"
         };
 
-        //Thread.Sleep(20000);
         ReadNoticiaDto response = NoticiaService.AdicionaNoticia(request);
         List<ReadNoticiaDto> result = NoticiaService.RecuperaNoticia(null);
 
@@ -171,12 +170,13 @@ public class NoticiasServicesTests : IClassFixture<WebApplicationFactory<Program
             Autor = "Gabriel"
         };
 
-        //Thread.Sleep(20000);
         ReadNoticiaDto response = NoticiaService.AdicionaNoticia(request);
         ReadNoticiaDto result = NoticiaService.RecuperaNoticiaPorId(response.Id);
 
         //Assert       
         Assert.NotNull(result);
+        Assert.NotNull(response);
+        Assert.Equal(response.Id, result.Id);
     }
 
     public async Task InitializeAsync()
